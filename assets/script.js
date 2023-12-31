@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         taskItem.appendChild(taskTextSpan);
 
         const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Done';
+        deleteButton.textContent = '-';
         deleteButton.classList.add('delete-button');
         const taskId = `task-${taskIdCounter++}`;
         deleteButton.id = taskId;
