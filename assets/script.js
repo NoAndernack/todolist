@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     taskItem.appendChild(deleteButton);
     taskList.appendChild(taskItem);
     taskItem.insertBefore(checkbox, taskItem.firstChild);
+    
 
     checkbox.addEventListener("change", function () {
       taskItem.classList.toggle("complet");
@@ -55,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.classList.add("checkbox");
-      taskItem.appendChild(checkbox);
+      taskItem.insertBefore(checkbox, taskItem.firstChild);
       taskList.appendChild(taskItem);
 
       checkbox.addEventListener("change", function () {
@@ -85,4 +86,5 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     addTask();
   });
+
 });
