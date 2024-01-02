@@ -136,8 +136,8 @@ li {
   border: none;
   border-radius: 15px;
   margin: 10px;
-  color: #000000;
-  border: rgb(80, 80, 203) solid 3px;
+  color: white;
+  background-color: rgb(80, 80, 203) solid 3px;
   transition: 0.5s ease;
 }
 .delete-button:hover {
@@ -149,9 +149,9 @@ button {
   border: none;
   border-radius: 15px;
   margin: 10px;
-  color: #000000;
-  border: rgb(80, 80, 203) solid 3px;
+  color: white;
   transition: 0.5s ease;
+  background-color: rgb(80, 80, 203);
 }
 button:hover {
   transform: scale(1.2);
