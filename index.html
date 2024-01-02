@@ -7,25 +7,22 @@
     <title>To do list</title>
     <link rel="stylesheet" href="style.css">
     <script src="assets/script.js"></script>
+    
 </head>
 
 <body>
-    <header>
-        <h1>TO DO LIST</h1>
-    </header>
+    <h1>To do list</h1>
     <section class="content">
-
-        <label for="content__toDo" class="textToDo ">Ajoutez une chose à faire : </label>
-        <form id="content__toDo__Form">
-            <div class="content__send">
-                <input type="text" id="toDo" name="toDo" required minlength="4" maxlength="50" size="20" />
-                <button type="submit">+</button>
-            </div>
+        <div class="head">
+        <label for="task" class="content__text"> Ajoutez tâches</label>
+        <form class="content__form">
+            <input type="text" name="task" id="taskId" required minlength="3" maxlength="50" size="20">
+            <button class="content__form--button">+</button>
         </form>
-        <ul class="list">
-
-        </ul>
+    </div>
+        <ul class="list"></ul>
     </section>
+
 </body>
 
 </html>

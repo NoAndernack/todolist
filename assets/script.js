@@ -1,107 +1,88 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const toDoForm = document.getElementById('content__toDo__Form');
-    const toDoInput = document.getElementById('toDo');
-    const taskList = document.querySelector('.list');
-    let taskIdCounter = 1;
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.querySelector("form");
+  const taskList = document.querySelector(".list");
+  const taskInput = document.querySelector("#taskId");
+  const taskLabel = document.querySelector(".content__text");
+  let tasks = []; // Déclarer la variable en dehors de la fonction pour qu'elle soit accessible dans tout le script
 
-    loadTasks();
+  loadTasks();
 
-    toDoForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-        const taskText = toDoInput.value;
-        addTask(taskText);
-        saveTasks();
-        toDoInput.value = '';
+  function addTask() {
+    const input = taskInput.value;
+    const checkbox = document.createElement("input");
+    const taskItem = document.createElement("li");
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "-";
+    checkbox.type = "checkbox";
+    checkbox.classList.add("checkbox");
+    taskItem.textContent = input;
+    taskItem.appendChild(deleteButton);
+    taskList.appendChild(taskItem);
+    taskItem.insertBefore(checkbox, taskItem.firstChild);
+
+    checkbox.addEventListener("change", function () {
+      taskItem.classList.toggle("complet");
+      saveTasks();
+    });
+    deleteButton.addEventListener("click", function () {
+      taskItem.remove();
+      removeTaskFromArray(taskItem.textContent);
+      saveTasks();
     });
 
-    function addTask(taskText) {
-        const taskItem = document.createElement('li');
+    saveTasks();
+  }
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.classList.add('task-checkbox');
-        taskItem.appendChild(checkbox);
+  function saveTasks() {
+    tasks = [];
+    document.querySelectorAll(".list li").forEach(function (taskItem) {
+      tasks.push({
+        text: taskItem.textContent,
+        completed: taskItem.classList.contains("complet"),
+      });
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
 
-        const taskTextSpan = document.createElement('span');
-        taskTextSpan.textContent = taskText;
-        taskItem.appendChild(taskTextSpan);
+  function loadTasks() {
+    tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.forEach(function (task) {
+      const taskItem = document.createElement("li");
+      taskItem.textContent = task.text;
+      if (task.completed) {
+        taskItem.classList.add("complet");
+      }
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.classList.add("checkbox");
+      taskItem.appendChild(checkbox);
+      taskList.appendChild(taskItem);
 
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Done';
-        deleteButton.classList.add('delete-button');
-        const taskId = `task-${taskIdCounter++}`;
-        deleteButton.id = taskId;
-        taskItem.appendChild(deleteButton);
+      checkbox.addEventListener("change", function () {
+        taskItem.classList.toggle("complet");
+        saveTasks();
+      });
 
-        checkbox.addEventListener('change', function () {
-            taskItem.classList.toggle('completed', checkbox.checked);
-            saveTasks();
-        });
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "-";
+      taskItem.appendChild(deleteButton);
 
-        deleteButton.addEventListener('click', function () {
-            taskItem.remove();
-            saveTasks();
-        });
+      deleteButton.addEventListener("click", function () {
+        taskItem.remove();
+        removeTaskFromArray(task.text);
+        saveTasks();
+      });
+    });
+  }
 
-        taskList.appendChild(taskItem);
-    }
+  function removeTaskFromArray(text) {
+    tasks = tasks.filter(function (task) {
+      return task.text !== text;
+    });
+  }
 
-    function saveTasks() {
-        const tasks = [];
-
-        document.querySelectorAll('.list li').forEach(function (taskItem) {
-            tasks.push({
-                text: taskItem.querySelector('span:nth-child(2)').textContent,
-                completed: taskItem.classList.contains('completed')
-            });
-        });
-
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-
-    function loadTasks() {
-        const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
-        tasks.forEach(function (task) {
-            addTaskWithState(task.text, task.completed);
-        });
-    }
-
-    function addTaskWithState(taskText, completed) {
-        const taskItem = document.createElement('li');
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.classList.add('task-checkbox');
-        taskItem.appendChild(checkbox);
-
-        const taskTextSpan = document.createElement('span');
-        taskTextSpan.textContent = taskText;
-        taskItem.appendChild(taskTextSpan);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '-';
-        deleteButton.classList.add('delete-button');
-        const taskId = `task-${taskIdCounter++}`;
-        deleteButton.id = taskId;
-        taskItem.appendChild(deleteButton);
-
-        checkbox.addEventListener('change', function () {
-            taskItem.classList.toggle('completed', checkbox.checked);
-            saveTasks();
-        });
-
-        deleteButton.addEventListener('click', function () {
-            taskItem.remove();
-            saveTasks();
-        });
-
-        checkbox.checked = completed;
-
-        if (completed) {
-            taskItem.classList.add('completed');
-        }
-
-        taskList.appendChild(taskItem);
-    }
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    addTask();
+  });
 });
